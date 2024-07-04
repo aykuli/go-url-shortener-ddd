@@ -18,7 +18,7 @@ type Handler struct {
 
 func NewHandler(store repository.Store) *http.ServeMux {
 	handler := &Handler{
-		urlService: shortURL.NewURLService(),
+		urlService: shortURL.NewURLService(store),
 		store:      store,
 	}
 
