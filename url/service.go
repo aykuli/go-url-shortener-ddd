@@ -5,13 +5,17 @@ import (
 	"encoding/hex"
 
 	"github.com/vokinneberg/go-url-shortener-ddd/domain"
+	"github.com/vokinneberg/go-url-shortener-ddd/internal/repository"
 )
 
 type URLService struct {
+	store repository.Store
 }
 
-func NewURLService() *URLService {
-	return &URLService{}
+func NewURLService(store repository.Store) *URLService {
+	return &URLService{
+		store: store,
+	}
 }
 
 func (h *URLService) Shorten(original string) (*domain.URL, error) {
@@ -22,5 +26,10 @@ func (h *URLService) Shorten(original string) (*domain.URL, error) {
 }
 
 func (h *URLService) Find(id string) (*domain.URL, error) {
-	return nil, nil
+	url, err := h.store.Read(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return url, nil
 }
